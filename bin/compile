@@ -1,10 +1,8 @@
 #!/bin/bash
 BUILD_DIR=$1
-TESSERACT_OCR_VERSION=3.02.02
 TESSERACT_OCR_DATA_VERSION=3.02
 
-TESSERACT_OCR_TGZ=tesseract-ocr-$TESSERACT_OCR_VERSION.tar.gz
-TESSERACT_OCR_REMOTE=https://dl.dropboxusercontent.com/s/4xl1ys9hf1kgvhl/$TESSERACT_OCR_TGZ
+TESSERACT_OCR_REMOTE=https://s3.amazonaws.com/fixedapp-static/tesseract-ocr-3.02.02.tar.gz
 INSTALL_DIR=$BUILD_DIR/vendor/tesseract-ocr/
 INSTALL_DIR_TRAINING_DATA=$BUILD_DIR/vendor/
 TESSERACT_OCR_DIR=${HOME}/vendor/tesseract-ocr
