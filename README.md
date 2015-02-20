@@ -13,8 +13,14 @@ BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi
 Then, create a `.buildpacks` file inside your app:
 ```
 https://github.com/heroku/_YOUR_MAIN_BUILDPACK
-https://github.com/fouady/heroku-buildpack-tesseract.git
+https://github.com/djburdick/Heroku-Buildpack-Tesseract
 ```
+
+You'll also need to set your CFLAGS env variable in heroku to:
+```
+CFLAGS:               -I/app/vendor/tesseract-ocr/include
+```
+
 See the documentation of heroku-build-multi for a detailed explanation
 how to use it.
 
