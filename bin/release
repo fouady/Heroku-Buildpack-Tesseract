@@ -1,2 +1,6 @@
 #!/bin/sh
-echo "release"
+cat << EOF
+---
+addons:
+  - heroku-postgresql
+EOF
