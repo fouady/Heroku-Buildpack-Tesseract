@@ -1,26 +1,20 @@
 #!/bin/bash
 BUILD_DIR=$1
-TESSERACT_OCR_VERSION=3.02.02
-TESSERACT_OCR_DATA_VERSION=3.02
+TESSERACT_OCR_VERSION=3.05.01
 
-TESSERACT_OCR_TGZ=tesseract-ocr-$TESSERACT_OCR_VERSION.tar.gz
-TESSERACT_OCR_REMOTE=http://www.weebly.com/uploads/1/1/5/1/11516991/$TESSERACT_OCR_TGZ
+TESSERACT_OCR_REMOTE=https://codeload.github.com/tesseract-ocr/tesseract/tar.gz/$TESSERACT_OCR_VERSION
 INSTALL_DIR=$BUILD_DIR/vendor/tesseract-ocr/
-INSTALL_DIR_TRAINING_DATA=$BUILD_DIR/vendor/
+INSTALL_DIR_TRAINING_DATA=$BUILD_DIR/vendor
 TESSERACT_OCR_DIR=${HOME}/vendor/tesseract-ocr
 ENVSCRIPT=$BUILD_DIR/.profile.d/tesseract-ocr.sh
 
-TESSERACT_OCR_LANGUAGES=swe,nld,deu,nor,fra,spa,rus,fin
+TESSERACT_OCR_LANGUAGES=eng
 
 echo "Getting Tesseract-ocr Binaries from $TESSERACT_OCR_REMOTE..."
 mkdir -p $INSTALL_DIR
 curl $TESSERACT_OCR_REMOTE -o - | tar -xz -C $INSTALL_DIR -f -
 
 echo 'Getting tesseract-ocr training data'
-echo 'English training data'
-curl https://tesseract-ocr.googlecode.com/files/tesseract-ocr-$TESSERACT_OCR_DATA_VERSION.eng.tar.gz \
-  -o - | tar -xz -C $INSTALL_DIR_TRAINING_DATA -f -
-
 if [ $TESSERACT_OCR_LANGUAGES ]
 then
    array=(${TESSERACT_OCR_LANGUAGES//,/ })
@@ -28,15 +22,9 @@ then
    do
      lang="${array[i]}"
      echo $lang 'training data'
-     curl https://tesseract-ocr.googlecode.com/files/tesseract-ocr-$TESSERACT_OCR_DATA_VERSION.$lang.tar.gz \
-  -o - | tar -xz -C $INSTALL_DIR_TRAINING_DATA -f -
-
+     curl -o $INSTALL_DIR_TRAINING_DATA/${lang}.traineddata https://github.com/tesseract-ocr/tessdata/raw/master/${lang}.traineddata
    done
 fi
-
-#echo 'Swedish training data'
-#curl https://tesseract-ocr.googlecode.com/files/tesseract-ocr-$TESSERACT_OCR_DATA_VERSION.swe.tar.gz \
-#  -o - | tar -xz -C $INSTALL_DIR_TRAINING_DATA -f -
 
 echo "Building runtime environment for tesseract-ocr"
 mkdir -p $BUILD_DIR/.profile.d
